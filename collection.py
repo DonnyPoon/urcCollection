@@ -25,7 +25,7 @@ def save_to_csv(data, filename):
         df.to_csv(filename, index=False)
 
 def main():
-    while True:
+    while True: # can manually exit with ctrl+e or stop program for now
         filename = 'urc_soil_data.csv'
         data = collect_data()
         save_to_csv(data, filename)
