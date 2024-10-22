@@ -12,7 +12,7 @@ class ClickTracker:
         self.canvas.pack(fill=tk.BOTH, expand=True)
 
         self.points = []
-        self.line_width = 2  # Default line width
+        self.line_width = 1  # Default line width
         
         self.canvas.bind("<Button-1>", self.track_click)
 
@@ -33,11 +33,11 @@ class ClickTracker:
     def open_image(self):
         file_path = filedialog.askopenfilename(filetypes=[("Image Files", "*.jpg")])
         if file_path:
-            # Load the image without modifying the original file
+            # Load the image and resize to standard
             self.image = Image.open(file_path)
+            self.image = self.image.resize((800, 800))
             self.photo = ImageTk.PhotoImage(self.image)
-
-            # Clear the canvas and display the image at its original size
+            
             self.canvas.delete("all")
             self.canvas.config(width=self.photo.width(), height=self.photo.height())
             self.canvas.create_image(0, 0, anchor=tk.NW, image=self.photo)
