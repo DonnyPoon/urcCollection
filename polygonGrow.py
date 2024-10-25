@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import filedialog
 from PIL import Image, ImageTk
 import random
+import os
 
 class ClickTracker:
     def __init__(self, master):
@@ -41,6 +42,9 @@ class ClickTracker:
         self.line_width_slider.set(self.line_width)  # Set default value
         self.line_width_slider.pack()
 
+        # File name to use to make new coordinate file
+        self.file_name = ""
+
     def open_image(self):
         file_path = filedialog.askopenfilename(filetypes=[("Image Files", "*.jpg")])
         if file_path:
@@ -56,6 +60,11 @@ class ClickTracker:
             # Reset lines and points for new image
             self.points = []
             self.line = []
+        
+        # Get file name
+        file_path = os.path.basename(file_path) # Returns base name
+        file_path = os.path.splitext(file_path)[0] # Splits into a tuple, first index is name, second index is the extension
+        self.file_name = file_path
 
     def clear_coordinates(self):
         self.canvas.delete(self.points)
@@ -76,7 +85,7 @@ class ClickTracker:
     def save_coordinates(self):
         self.line.append(self.points)
         self.draw_lines(self.random_color(), self.line[-1]) # Add current line coordinates to line list
-        with open("coordinates.txt", "a") as f: # Make or append to file
+        with open(self.file_name, "a") as f: # Make or append to file
             f.write(f"Object {len(self.line)}\n")
             for point in self.points:
                 f.write(f"{point[0]}, {point[1]}\n")
